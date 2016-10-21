@@ -1,0 +1,38 @@
+mysql> describe posts;
++-------------+---------------+------+-----+---------+----------------+
+| Field       | Type          | Null | Key | Default | Extra          |
++-------------+---------------+------+-----+---------+----------------+
+| id          | int(11)       | NO   | PRI | NULL    | auto_increment |
+| title       | varchar(300)  | YES  |     | NULL    |                |
+| url         | varchar(2000) | YES  |     | NULL    |                |
+| userId      | int(11)       | YES  | MUL | NULL    |                |
+| createdAt   | datetime      | NO   |     | NULL    |                |
+| updatedAt   | datetime      | NO   |     | NULL    |                |
+| subredditId | int(11)       | YES  | MUL | NULL    |                |
++-------------+---------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> describe users;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int(11)     | NO   | PRI | NULL    | auto_increment |
+| username  | varchar(50) | NO   | UNI | NULL    |                |
+| password  | varchar(60) | NO   |     | NULL    |                |
+| createdAt | datetime    | NO   |     | NULL    |                |
+| updatedAt | datetime    | NO   |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+posts.userId = users.id
+
+mysql> describe subreddits;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name        | varchar(30)  | YES  | UNI | NULL    |                |
+| description | varchar(200) | YES  |     | NULL    |                |
+| createdAt   | datetime     | NO   |     | NULL    |                |
+| updatedAt   | datetime     | NO   |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
