@@ -15,29 +15,21 @@ var redditAPI = reddit(connection);
 
 // It's request time!
 // redditAPI.createUser({
-//   username: 'test2',
-//   password: '78912'
+//   username: 'catlover',
+//   password: '123'
 // }, function(err, user) {
 //   if (err) {
 //     console.log(err);
 //   }
 //   else {
-//     redditAPI.createPost({
-//       title: 'test2',
-//       url: 'https://www.test2.com',
-//       userId: user.id,
-//     }, function(err, post) {
-//       if (err) {
-//         console.log(err);
-//       }
-//       else {
-//         console.log(post);
-//       }
-//     });
+//     console.log(user);
 //   }
+//   connection.end();
 // });
 
-redditAPI.getAllPosts('options', function(err, allPosts) {
+//var sortingMethod = ['top', 'hotness', 'newest', 'controversial']
+
+redditAPI.getAllPosts({numPerPage: 25, page: 0, sortingMethod: 'hotness'}, function(err, allPosts) {
   if (err) {
     console.log(err);
   } else {
@@ -64,11 +56,11 @@ redditAPI.getAllPosts('options', function(err, allPosts) {
 //   connection.end();
 // });
 
-// redditAPI.createSubreddit(someNewObject, function(err, subreddit) {
+// redditAPI.createSubreddit({name: 'food'}, function(err, theNewSubreddit) {
 //   if (err) {
 //     console.log(err);
 //   } else {
-//     console.log(subreddit);
+//     console.log(theNewSubreddit);
 //   }
 //   connection.end();
 // })
@@ -82,11 +74,11 @@ redditAPI.getAllPosts('options', function(err, allPosts) {
 //   connection.end();
 // })
 // var testPost = {
-//       title: 'test3',
-//       url: 'https://www.test3.com',
-//       userId:  1,
+//       title: 'basketball',
+//       url: 'https://www.nba.com',
+//       userId:  9,
 // }
-// redditAPI.createPost(testPost, 2, function (err, newPost) {
+// redditAPI.createPost(testPost, 7, function (err, newPost) {
 //   if (err) {
 //     console.log(err);
 //   } else {
@@ -94,3 +86,18 @@ redditAPI.getAllPosts('options', function(err, allPosts) {
 //   }
 //   connection.end();
 // });
+
+
+// redditAPI.createOrUpdateVote({
+//   userId: 1,
+//   postId: 12,
+//   vote: 1
+// }, function(err, result) {
+//   if (err) {
+//     console.log(err);
+//   }
+//   else {
+//     console.log(result);
+//   }
+//   connection.end();
+// })
