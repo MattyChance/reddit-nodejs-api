@@ -29,7 +29,7 @@ var redditAPI = reddit(connection);
 
 //var sortingMethod = ['top', 'hotness', 'newest', 'controversial']
 
-redditAPI.getAllPosts({numPerPage: 25, page: 0, sortingMethod: 'hotness'}, function(err, allPosts) {
+redditAPI.getAllPosts({numPerPage: 25, page: 0, sortingMethod: 'controversial'}, function(err, allPosts) {
   if (err) {
     console.log(err);
   } else {
@@ -89,8 +89,8 @@ redditAPI.getAllPosts({numPerPage: 25, page: 0, sortingMethod: 'hotness'}, funct
 
 
 // redditAPI.createOrUpdateVote({
-//   userId: 1,
-//   postId: 12,
+//   userId: 11,
+//   postId: 3,
 //   vote: 1
 // }, function(err, result) {
 //   if (err) {

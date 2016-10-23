@@ -108,6 +108,11 @@ module.exports = function RedditAPI(conn) {
         sortingMethod = 'posts.createdAt';
       } else if (options.sortingMethod === 'hotness') {
         sortingMethod = 'hotness';
+      } else if (options.sortingMethod === 'controversial') {
+        sortingMethod = `CASE WHEN SUM(votes.vote > 0) < SUM(votes.vote < 0) THEN COUNT(votes.vote) * (SUM(votes.vote > 0) DIV SUM(votes.vote < 0))
+                              WHEN SUM(votes.vote > 0) > SUM(votes.vote < 0) THEN COUNT(votes.vote) * (SUM(votes.vote < 0) DIV SUM(votes.vote > 0))
+                         END
+                       `;
       } else {
         sortingMethod = 'posts.id';
       }
@@ -121,6 +126,9 @@ module.exports = function RedditAPI(conn) {
                       , subreddits.description as subreddit_description
                       , SUM(votes.vote) as vote_score
                       , (votes.vote / TIMESTAMPDIFF(MINUTE, posts.createdAt, NOW())) as hotness
+                      , SUM(votes.vote > 0) as numUpVote
+                      , SUM(votes.vote < 0) as numDownVote
+                      , COUNT(votes.vote) as total_vote
                       from posts
                       LEFT JOIN users on users.id = posts.userId 
                       LEFT JOIN subreddits on subreddits.id = posts.subredditId
