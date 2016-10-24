@@ -1,14 +1,19 @@
 var express = require('express');
 
-var myWebServer = express();
+var myApp = express();
 
-myWebServer.get('/hello', function(request, response) {
+myApp.get('/hello', function(request, response) {
     console.log(request.query);
-    response.send('<h1>Hello ! 你好啊! </h1>');
-})
+    response.send('<h1>Hello, ' + request.query.name + '!</h1>');
+}) 
 
-// myWebServer.use(function(request, response) {
+
+// myApp.use(function(request, response) {
 //     console.log(request.method + '' + request.url); 
 // })
 
-myWebServer.listen(process.env.PORT);
+var server = myApp.listen(process.env.PORT, process.env.IP, function(){
+    var host = server.address().address;
+    var port = server.address().port;
+    console.log('myApp listening at http://%s:%s', host, port );
+});
