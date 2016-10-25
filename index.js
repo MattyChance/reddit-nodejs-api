@@ -81,6 +81,21 @@ myApp.get('/posts', function(request, response) {
     });
 });
 
+var formHTML = `<form action="/createContent" method="POST">
+                    <div>
+                      <input type="text" name="url" placeholder="Enter a URL to content">
+                    </div>
+                    <div>
+                      <input type="text" name="title" placeholder="Enter the title of your content">
+                    </div>
+                    <button type="submit">Created!</button>
+                </form>
+                `;
+                
+myApp.get('/createContent', function(req, res) {
+    res.send(formHTML);
+});
+
 var server = myApp.listen(process.env.PORT, process.env.IP, function(){
     var host = server.address().address;
     var port = server.address().port;
