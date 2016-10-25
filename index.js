@@ -55,7 +55,7 @@ myApp.get('/posts', function(request, response) {
         sortingMethod: 'createdAt'
     }, function(err, result) {
         if (err) {
-            console.log(err, 'Something went wrong when retrieving the psots. Try again later.');
+            result.status(404).send('Something went wrong when retrieving the posts. Try again later.');
         }
         else {
             var html = [`<div id="contents">
@@ -69,16 +69,16 @@ myApp.get('/posts', function(request, response) {
                                   </h2>
                                   <p>Created by ${result[i].user.username}</p>
                                 </li>`);
-                  html.push(` </ul>
-                            </div>`);
                  
             };
+            
+            html.push(` </ul>
+                     </div>`);
 
             response.send(html.join(''));
         }
         connection.end();
     });
-
 });
 
 var server = myApp.listen(process.env.PORT, process.env.IP, function(){
