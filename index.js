@@ -44,8 +44,23 @@ myRedditC.get('/', function(req, res) {
 
 //create signup page
 myRedditC.get('/signup', function(req, res) {
-    res.render('create-content');
+    res.render('signup-form');
 });
+
+//create login page
+myRedditC.get('/login', function(req, res) {
+    res.render('login-form');
+});
+
+//create the create post page
+myRedditC.get('/createpost', function(req, res) {
+   res.render('createPost-form'); 
+});
+
+//create subreddit page
+myRedditC.get('/r/:subreddit', function(req, res) {
+    
+})
 
 //listen
 var port = process.env.PORT || 3000;
