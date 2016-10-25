@@ -1,0 +1,16 @@
+extends layout.pug
+
+block scripts
+ link(rel="stylesheet", href="/files/styles.css")
+
+block title
+ title My Posts
+
+block content
+ ul
+ each val in posts
+  li 
+   h2
+    a(href= val.postURL)= val.title
+   p= val.user.username
+   
