@@ -16,7 +16,9 @@ var myApp = express();
 
 myApp.get('/hello', function(request, response) {
     console.log(request.query);
-    response.send('<h1>Hello, ' + request.query.name + '!</h1>');
+    var name = request.query.name || 'world!'
+    //console.log(request); This gives my console an empty object {}
+    response.send('<h1>Hello, ' + name + '!</h1>');
 }); 
 
 
@@ -49,16 +51,21 @@ myApp.get('/calculator/:op' ,function(request, response) {
 
 
 myApp.get('/posts', function(request, response) {
-
+    
+    
     redditAPI.getAllPosts({
         numPerPage: 5,
         page: 0,
         sortingMethod: 'createdAt'
-    }, function(err, result) {
+    }, function(err, posts) {
         if (err) {
-            result.status(404).send('Something went wrong when retrieving the posts. Try again later.');
+            posts.status(500).send('Something went wrong when retrieving the posts. Try again later.');
         }
         else {
+            //console.log(posts);
+            response.render('post-list', {posts: posts});
+
+            /* Manually rendering results
             var html = [`<div id="contents">
                             <h1>Five Newest Posts</h1>
                                 <ul class="contents-list">`];
@@ -70,6 +77,7 @@ myApp.get('/posts', function(request, response) {
                                   </h2>
                                   <p>Created by ${result[i].user.username}</p>
                                 </li>`);
+             
                  
             };
             
@@ -77,28 +85,32 @@ myApp.get('/posts', function(request, response) {
                      </div>`);
 
             response.send(html.join(''));
+            */
         }
     });
+  
+    
 });
 
-var formHTML = `<form action="/createContent" method="POST">
-                    <div>
-                      <input type="text" name="url" placeholder="Enter a URL to content">
-                    </div>
-                    <div>
-                      <input type="text" name="title" placeholder="Enter the title of your content">
-                    </div>
-                    <button type="submit">Created!</button>
-                </form>
-                `;
+// var formHTML = `<form action="/createContent" method="POST">
+//                     <div>
+//                       <input type="text" name="url" placeholder="Enter a URL to content">
+//                     </div>
+//                     <div>
+//                       <input type="text" name="title" placeholder="Enter the title of your content">
+//                     </div>
+//                     <button type="submit">Created!</button>
+//                 </form>
+//                 `;
                 
 myApp.get('/createContent', function(req, res) {
-    //res.send(formHTML);
+    // res.send(formHTML);
     res.render('create-content');
 
 });
 
 /*
+challenge
  Using a response.redirect, 
  redirect the user to the URL /posts/:ID where :ID is the ID of the newly created post. 
  you have to implement the /posts/:ID URL! See if you can do that and return a single post only.
@@ -107,17 +119,13 @@ myApp.get('/createContent', function(req, res) {
 var urlencodedParser = bodyParser.urlencoded({extended: false});
 myApp.post('/createContent', urlencodedParser, function(req, res, next) {
     console.log(req.body);
-    //res.send("okie, dokie yo");
+    // res.send("okie, dokie yo");
+    // res.redirect('/posts');
     next();
 }, function(req, res, next) {
-    res.redirect('/posts/:ID', function(req, res, next) {
-        next();
-    });
-    res.get('/posts/:ID', function(req, res, next) {
-        console.log(req.params);
-    });
-    
+    res.redirect('/posts');
 });
+
 
 myApp.set('view engine', 'pug');
 
