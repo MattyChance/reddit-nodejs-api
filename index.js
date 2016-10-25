@@ -42,6 +42,10 @@ myRedditC.get('/', function(req, res) {
     });
 });
 
+//create signup page
+myRedditC.get('/signup', function(req, res) {
+    res.render('create-content');
+});
 
 //listen
 var port = process.env.PORT || 3000;
@@ -52,3 +56,4 @@ myRedditC.listen(port, function() {
        console.log('Web server is listening on http://localhost;' + port);
    }
 });
+
