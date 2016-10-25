@@ -1,6 +1,7 @@
 var express = require('express');
 var reddit = require('./reddit');
 var mysql = require('mysql');
+var bodyParser = require('body-parser');
 
 var connection = mysql.createConnection({
   host     : 'localhost',
@@ -77,7 +78,6 @@ myApp.get('/posts', function(request, response) {
 
             response.send(html.join(''));
         }
-        connection.end();
     });
 });
 
@@ -93,8 +93,33 @@ var formHTML = `<form action="/createContent" method="POST">
                 `;
                 
 myApp.get('/createContent', function(req, res) {
-    res.send(formHTML);
+    //res.send(formHTML);
+    res.render('create-content');
+
 });
+
+/*
+ Using a response.redirect, 
+ redirect the user to the URL /posts/:ID where :ID is the ID of the newly created post. 
+ you have to implement the /posts/:ID URL! See if you can do that and return a single post only.
+ */
+
+var urlencodedParser = bodyParser.urlencoded({extended: false});
+myApp.post('/createContent', urlencodedParser, function(req, res, next) {
+    console.log(req.body);
+    //res.send("okie, dokie yo");
+    next();
+}, function(req, res, next) {
+    res.redirect('/posts/:ID', function(req, res, next) {
+        next();
+    });
+    res.get('/posts/:ID', function(req, res, next) {
+        console.log(req.params);
+    });
+    
+});
+
+myApp.set('view engine', 'pug');
 
 var server = myApp.listen(process.env.PORT, process.env.IP, function(){
     var host = server.address().address;
