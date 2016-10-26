@@ -31,13 +31,13 @@ var redditAPI = reddit(connection);
 //query string is defaulted at 'hotness'; or ?sort=newest, or top, or controversial
 myRedditC.get('/', function(req, res) {
     var queryStr = req.query.sort || 'hotness';
-    console.log(req.query.sort);
+    //console.log(req.query.sort);
     redditAPI.getAllPosts({numPerPage: 25, page: 0, sortingMethod: queryStr}, function(err, allPosts) {
         if (err) {
             res.status(500).send('Sorry, something went wrong. Please try later.');
         } else {
             //console.log(allPosts);
-            res.render('post-list', {posts: allPosts});
+            res.render('allpost-list', {posts: allPosts});
         }
     });
 });
@@ -59,8 +59,17 @@ myRedditC.get('/createpost', function(req, res) {
 
 //create subreddit page
 myRedditC.get('/r/:subreddit', function(req, res) {
-    
-})
+    var subredditId = parseInt(req.params.subreddit);
+    console.log(subredditId);
+    redditAPI.getPostForOneSubreddit({numPerPage: 25, page: 0, subId: subredditId}, function(err, posts) {
+        if (err) {
+            res.status(500).send('Sorry! There was an error. Please try later.');
+        } else {
+            // res.send(posts);
+            res.render('sub-post-list', {posts: posts});
+        }
+    });
+});
 
 //listen
 var port = process.env.PORT || 3000;
