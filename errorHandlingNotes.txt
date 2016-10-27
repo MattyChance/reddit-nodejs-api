@@ -1,0 +1,17 @@
+if userId does not exists yet:
+
+{ [Error: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`reddit`.`votes`, CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`))]
+  code: 'ER_NO_REFERENCED_ROW_2',
+  errno: 1452,
+  sqlState: '23000',
+  index: 0 }
+  
+  if postId does not exists
+  
+  { [Error: ER_NO_REFERENCED_ROW_2: Cannot add or update a child row: a foreign key constraint fails (`reddit`.`votes`, CONSTRAINT `votes_ibfk_2` FOREIGN KEY (`postId`) REFERENCES `posts` (`id`))]
+  code: 'ER_NO_REFERENCED_ROW_2',
+  errno: 1452,
+  sqlState: '23000',
+  index: 0 }
+  
+  if the user tried to give the same vote score to the same post

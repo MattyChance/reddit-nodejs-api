@@ -64,40 +64,48 @@ module.exports = function RedditAPI(conn) {
         }
       });
     },
-    createPost: function(post, subredditId, callback) {
+    //createPost takes an object {title: , url: , userId: }, a subreddit Id and a callback function
+    createPost: function(post, subredditName, callback) {
       //if subredditId is given, check whether it exists in the subreddits table or not
-      if (!subredditId) {
+      if (!subredditName) {
         callback(new Error('Subreddit is required'));
         return;
       }
-      
+
       //use getSinglepost function to do this
-      var myquery = 'INSERT INTO posts (userId, title, url, createdAt, subredditId) VALUES (?, ?, ?, ?, ?)';
-      conn.query(myquery, [post.userId, post.title, post.url, new Date(), subredditId],
-        function(err, result) {
-          if (err) {
-            callback(err);
-          }
-          else {
-            /*
-            Post inserted successfully. Let's use the result.insertId to retrieve
-            the post and send it to the caller!
-            */
-            conn.query(
-              'SELECT userId, title, url, createdAt, subredditId FROM posts WHERE id = ?', [result.insertId],
-              function(err, result) {
-                if (err) {
-                  callback(err);
-                }
-                else {
-                  callback(null, result[0]);
-                }
-              }
-            );
-          }
+      conn.query('SELECT id FROM subreddits WHERE name = ?', [subredditName], function(err, subId) {
+        if (err) {
+          callback(err);
         }
-      );
+        else {
+          var getSubredditId = subId
+          //callback(null, subId);
+          
+          var myquery = 'INSERT INTO posts (userId, title, url, createdAt, subredditId) VALUES (?, ?, ?, ?, ?)';
+          conn.query(myquery, [post.userId, post.title, post.url, new Date(), getSubredditId[0].id],
+            function(err, result) {
+              if (err) {
+                callback(err);
+              }
+              else {
+                conn.query(
+                  'SELECT userId, title, url, createdAt, subredditId FROM posts WHERE id = ?', [result.insertId],
+                  function(err, result) {
+                    if (err) {
+                      callback(err);
+                    }
+                    else {
+                      callback(null, result);
+                    }
+                  }
+                );
+              }
+            }
+          );
+        }
+      });
     },
+    
     getAllPosts: function(options, callback) {
       // In case we are called without an options parameter, shift all the parameters manually
       if (!callback) {
@@ -348,12 +356,12 @@ module.exports = function RedditAPI(conn) {
         });
       },
       //next function here
-      getUserFromSession: function(userId, callback) {
-        conn.query(`SELECT * from sessions WHERE userId = ?`, [userId], function(err, user) {
+      getUserFromSession: function(token, callback) {
+        conn.query(`SELECT users.id, users.username, sessions.token from sessions JOIN users ON sessions.userId=users.id WHERE sessions.token = ?`, [token], function(err, user) {
             if (err) {
               callback(err);
             } else {
-              callback(user[0].token);
+              callback(null, user[0]);
             }
         });
       }

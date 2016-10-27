@@ -1,16 +1,14 @@
 extends layout.pug
 
-block scripts
- link(rel="stylesheet", href="/files/styles.css")
-
 block title
- title My Posts
+ title Reddit Clone Homepage
 
 block content
+ h1 Today's Hottest Posts
+ 
  ul
  each val in posts
   li 
-   h2
-    a(href= val.postURL)= val.title
-   p= val.user.username
+   a(href= val.postURL)= val.title
+   p= 'by ' + val.user.username
    

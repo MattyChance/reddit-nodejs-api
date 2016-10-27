@@ -1,9 +1,19 @@
-form(action='/createpost', method='POST')
+form(action='/createPost', method='POST')
   div
-    p New Post Title
-    input(type="text", value="Title", placeholder="What's your post?")
+    p Your Post Title
+    input(type="text", name="title", placeholder="What's the title of your post?")
   div
-    p The url link
-    input(type="text", value="url", placeholder="Submit the link of your post")
+    p Your Post Link
+    input(type="text", name="url", placeholder="Submit the link of your post?")
+    p Subreddit
+  div
+    select(name='subredditName')
+      option(value='food') Food
+      option(value='animals') Animals
+      option(value='funny') Funny
+      option(value='dogs') Dogs
+      option(value='askReddit') askReddit...
+      option(value='sports') Sports
+      option(value='askReddit') Default
   br
   button(type="submit") Submit post!

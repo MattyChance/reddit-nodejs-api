@@ -18,7 +18,7 @@ myRedditC.use('/files', express.static('static_files'));
 //middleware that adds cookie property to a request
 myRedditC.use(cookieParser());
 
-//middleware that holds the login info of user
+//middleware that holds the session cookie of a logged in user
 function checkLoginToken (request, response, next) {
         if (request.cookies.SESSION) {
           redditAPI.getUserFromSession(request.cookies.SESSION, function(err, user) {
@@ -74,7 +74,7 @@ myRedditC.get('/signup', function(req, res) {
 });
 //get user sign up data
 myRedditC.post('/newUserSignup', function(req, res) {
-    console.log(req.body);
+    //console.log(req.body);
     redditAPI.createUser({username: req.body.username, password: req.body.password}, function(err, user) {
         if (err) {
             res.status(500).send('sorry, sth went wrong. try later');
@@ -86,10 +86,12 @@ myRedditC.post('/newUserSignup', function(req, res) {
 
 //create login page
 myRedditC.get('/login', function(req, res) {
+    
     res.render('login-form');
+    
 });
 myRedditC.post('/login', function(req, res) {
-    console.log(req.body);
+    //console.log(req.body);
     
     redditAPI.checkLogin(req.body.username, req.body.password, function (err, user) {
         if (err) {
@@ -99,40 +101,54 @@ myRedditC.post('/login', function(req, res) {
                 if (err) {
                     res.status(500).send('Sorry, something went wrong. Please try again later.');
                 } else {
-                    res.cookie('SESSION', token);
+                    res.cookie('SESSION', token);//set the token value in browser's db
+                    return res.redirect('/');
                 }
             });
-            res.redirect('/login');
         }
     });
 });
 
 //create the create post page
 myRedditC.get('/createpost', function(req, res) {
+        res.render('createPost-form');
+
+});
+myRedditC.post('/createPost', function(req, res) {
+    // console.log('can i get body from here?', req.body);
     if (!req.loggedInUser) {
-        console.log(req.loggedInUser);
+        //res.redirect('/login');
         res.send(new Error('Please log in to create a post.'));
     }
     else {
-        console.log('or here?');
-        res.render('createPost-form');
-    }
-});
 
-myRedditC.post('/createpost', function(req, res) {
-    redditAPI.createPost();
+        redditAPI.createPost({title: req.body.title, url: req.body.url, userId: req.loggedInUser.id}, req.body.subredditName, function(err, post) {
+            if (err) {
+                res.status(500).send('Something went wrong. Please try again later');
+            } else {
+                res.send('Thank you! You have created a post!');
+            }
+        });
+    }
 });
 
 //create subreddit page
 myRedditC.get('/r/:subreddit', function(req, res) {
     var subredditId = parseInt(req.params.subreddit);
     //console.log(subredditId);
-    redditAPI.getPostForOneSubreddit({numPerPage: 25, page: 0, subId: subredditId}, function(err, posts) {
+    redditAPI.getPostForOneSubreddit({
+        numPerPage: 25,
+        page: 0,
+        subId: subredditId
+    }, function(err, posts) {
         if (err) {
             res.status(500).send('Sorry! There was an error. Please try later.');
-        } else {
+        }
+        else {
             // res.send(posts);
-            res.render('sub-post-list', {posts: posts});
+            res.render('sub-post-list', {
+                posts: posts
+            });
         }
     });
 });

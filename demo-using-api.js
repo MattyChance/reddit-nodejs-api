@@ -29,14 +29,22 @@ var redditAPI = reddit(connection);
 
 //var sortingMethod = ['top', 'hotness', 'newest', 'controversial']
 
-redditAPI.getAllPosts({numPerPage: 25, page: 0, sortingMethod: 'controversial'}, function(err, allPosts) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(allPosts);
-  }
-  connection.end();
-});
+// redditAPI.getAllPosts({numPerPage: 5, page: 0, sortingMethod: 'createAt'}, function(err, allPosts) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(allPosts);
+//   }
+//   connection.end();
+// });
+
+// redditAPI.getPostForOneSubreddit({numPerPage: 25, page: 0, subId: 5}, function(err, postsOfSub) {
+//   if(err) {
+//     console.log(err);
+//   } else {
+//     console.log(postsOfSub);
+//   }
+// });
 
 // redditAPI.getAllPostsForUser(4, function(err, userPosts) {
 //   if (err) {
@@ -73,19 +81,19 @@ redditAPI.getAllPosts({numPerPage: 25, page: 0, sortingMethod: 'controversial'},
 //   }
 //   connection.end();
 // })
-// var testPost = {
-//       title: 'basketball',
-//       url: 'https://www.nba.com',
-//       userId:  9,
-// }
-// redditAPI.createPost(testPost, 7, function (err, newPost) {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log(newPost);
-//   }
-//   connection.end();
-// });
+var testPost = {
+      title: 'awesome sharks',
+      url: 'https://www.animals.com',
+      userId:  9,
+}
+redditAPI.createPost(testPost, 'animals', function (err, newPost) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(newPost);
+  }
+  connection.end();
+});
 
 
 // redditAPI.createOrUpdateVote({
@@ -100,4 +108,28 @@ redditAPI.getAllPosts({numPerPage: 25, page: 0, sortingMethod: 'controversial'},
 //     console.log(result);
 //   }
 //   connection.end();
+// })
+
+// redditAPI.checkLogin('catlover', '123', function(err, res) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(res);
+//   }
+// })
+
+// redditAPI.createSession(1, function(err, session) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(session);
+//   }
+// })
+
+// redditAPI.getUserFromSession(1, function(err, user) {
+//   if(err) {
+//     console.log(err);
+//   } else {
+//     console.log(user);
+//   }
 // })

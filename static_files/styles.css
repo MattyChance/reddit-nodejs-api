@@ -1,0 +1,23 @@
+body {
+    background-color: lightblue;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+}
+
+ul {
+    background: #3399ff;
+    padding: 20px;
+}
+
+li{
+    text-align: center;
+}
+
+p {
+    font-family: verdana;
+    font-size: 20px;
+    /*text-align: center;*/
+}
