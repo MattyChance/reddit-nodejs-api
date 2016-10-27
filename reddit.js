@@ -1,6 +1,12 @@
 var bcrypt = require('bcrypt');
 var HASH_ROUNDS = 10;
+var secureRandom = require('secure-random');
 
+//functions that generate random tokens
+function createSessionToken() {
+  return secureRandom.randomArray(100).map(code => code.toString(36)).join('');
+}
+      
 module.exports = function RedditAPI(conn) {
   return {
     createUser: function(user, callback) {
@@ -228,7 +234,7 @@ module.exports = function RedditAPI(conn) {
                 callback(err);
               }
               else {
-                callback(theNewSubreddit);
+                callback(null, theNewSubreddit);
               }
             });
           }
@@ -273,14 +279,86 @@ module.exports = function RedditAPI(conn) {
                   if (err) {
                     callback(err);
                   } else {
-                    callback(voteScore);
+                    callback(null, voteScore);
                   }
                 });
               }
             });
         }
-      }
+      },
       //next function here
-      
-  }
-}
+      getPostForOneSubreddit: function(options, callback) {
+        if (!callback) {
+          callback = options;
+          options = {};
+        }
+        var limit = options.numPerPage || 25; 
+        var offset = (options.page || 0) * limit;        
+        if (!options.subId) {
+            callback(new Error('Please select a subreddit category.'))
+        } else {
+        conn.query(`SELECT posts.title, posts.url, subreddits.name 
+                    FROM posts 
+                    LEFT JOIN subreddits 
+                    ON subreddits.id = posts.subredditId
+                    WHERE subreddits.id = ${options.subId}`, function(err, postsOfSub) {
+                        if(err) {
+                          callback(err);
+                        } else {
+                          callback(null, postsOfSub);
+                        }
+                    });
+        }
+      },
+      //next function here
+      checkLogin: function(user, pw, callback) {
+        conn.query(`SELECT * FROM users where username = ?`, [user], function(err, result) {
+          if (err) {
+            callback(err);
+          }
+          if (result.length === 0) {
+            callback(new Error('User name or password is incorrect.'));
+          } else {
+            var user = result[0];
+            var actualHashedPassword = user.password;
+            bcrypt.compare(pw, actualHashedPassword, function(err, res) {
+              if (err) {
+                callback(err);
+              } 
+              if (res === true) {
+                callback(null, user);
+                //cookie
+                
+              } else {
+                callback(new Error('Sorry your password is incorrent.'));
+              }
+            });
+          }
+        });
+      },
+      //next function here: create 
+      createSession: function(userId, callback) {
+        var token = createSessionToken();
+        conn.query(`INSERT INTO sessions SET userId = ?, token = ?, createdAt = ?`, [userId, token, new Date()], function(err, result) {
+            if (err) {
+              callback(err);
+            } else {
+              callback(null, token);
+            }
+        });
+      },
+      //next function here
+      getUserFromSession: function(userId, callback) {
+        conn.query(`SELECT * from sessions WHERE userId = ?`, [userId], function(err, user) {
+            if (err) {
+              callback(err);
+            } else {
+              callback(user[0].token);
+            }
+        });
+      }
+  };
+};
+
+
+
