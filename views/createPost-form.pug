@@ -12,16 +12,11 @@ block content
       p Your Post Link
       input(type="text", name="url", placeholder="Submit the link of your post?")
       p Subreddit
+      
     div
-      select(name='subredditName')
-        option(value='food') Food
-        option(value='animals') Animals
-        option(value='funny') Funny
-        option(value='dogs') Dogs
-        option(value='askReddit...') askReddit...
-        option(value='sports') Sports
-    p Make your own Sub
-    // input(type= 'text', name='DIYSub', placeholder='Make your own Sub')
-        // option(value='askReddit...') Default
+      select
+        each sub in listOfSub
+          option(value='subredditName')= sub.name
+
     br
     button(type="submit") Submit post!

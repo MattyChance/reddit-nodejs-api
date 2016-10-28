@@ -65,8 +65,6 @@ var redditAPI = reddit(connection);
 //create homepage 
 //query string is defaulted at 'hotness'; or ?sort=newest, or top, or controversial
 myRedditC.get('/', function(req, res) {
-        console.log('req cookies', req.cookies);
-
     var queryStr = req.query.sort || 'hotness';
     redditAPI.getAllPosts({
         numPerPage: 25,
@@ -81,7 +79,6 @@ myRedditC.get('/', function(req, res) {
             res.status(500).send('Sorry, something went wrong. Please try later.');
         }
         else {
-            res.locals.allPosts = allPosts;
             res.render('allpost-list', {
                 posts: allPosts,
                 isLogged: hasSESSION
@@ -153,10 +150,18 @@ myRedditC.get('/logout', function(req, res) {
 
 //create the create post page
 myRedditC.get('/createpost', function(req, res) {
-    res.render('createPost-form');
+    
+    redditAPI.getAllSubreddits(function(err, listOfSub) {
+        if (err) {
+            res.status(500).send('Sorry. Something went wrong. Please try again later.');
+        } else {
+            // console.log(listOfSub);
+            res.render('createPost-form', {listOfSub: listOfSub});        
+        }
+    });
 });
-myRedditC.post('/createPost', function(req, res) {
 
+myRedditC.post('/createPost', function(req, res) {
     if (!req.loggedInUser) {
         res.redirect('/login');//how to render either log in or sign up?
     }
@@ -172,8 +177,6 @@ myRedditC.post('/createPost', function(req, res) {
                     res.status(500).send('sth wrong');
                 }
                 else {
-                    console.log(req.body);
-                    console.log(posts);
                     res.redirect('/r/' + req.body.subredditName);
                 }
             });

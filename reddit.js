@@ -172,7 +172,7 @@ module.exports = function RedditAPI(conn) {
                 },
                 subreddit: {
                   id: curr.subreddit_id,
-                  title: curr.sub_name,
+                  title: curr.subreddit_name,
                   description: curr.sub_description,
                 }
               };
@@ -261,7 +261,7 @@ module.exports = function RedditAPI(conn) {
             callback(err);
           }
           else {
-            callback(listSubreddits);
+            callback(null, listSubreddits);
           }
         });
     },

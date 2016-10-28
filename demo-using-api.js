@@ -133,6 +133,3 @@ var redditAPI = reddit(connection);
 //     console.log(user);
 //   }
 // })
-redditAPI.deleteSession('yh59133l14594l4845534f5m6k4u6d1l6j2x4x1t3k1v35201b564o4s472a2t3e6i2h6r22p4b51252o1l2x51413z15731b4o10611e476w2o2fl5r5lm5f385o2l4j11712r3ux154d259am5p631e5384n6o71744y1l5y4z4d6v4v5q5j1e1u', function (err, session) {
-  console.log(session);
-})
