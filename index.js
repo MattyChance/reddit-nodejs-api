@@ -6,19 +6,23 @@ var cookieParser = require('cookie-parser');
 
 var myRedditC = express();
 
+//output html in a better format; this will take extra data
+//myRedditC.locals.pretty = true; 
+
+
 //use the pug template engine
 myRedditC.set('view engine', 'pug');
 
 //middleware that parse the POST requests from HTML form
-myRedditC.use(bodyParser.urlencoded({
-    extended: false
-}));
+myRedditC.use(bodyParser.urlencoded({extended: false}));
 
 //middleware that serves static files
 myRedditC.use('/files', express.static('static_files'));
 
 //middleware that adds cookie property to a request
 myRedditC.use(cookieParser());
+
+const SESSION_USER = 'SESSION';
 
 //middleware that holds the session cookie of a logged in user
 function checkLoginToken(request, response, next) {
@@ -29,6 +33,8 @@ function checkLoginToken(request, response, next) {
             }
             if (user) {
                 request.loggedInUser = user;
+                //this makes the cookie a globally accessible variable
+                response.locals.loggedInUser = user;
             }
             next();
         });
@@ -39,6 +45,7 @@ function checkLoginToken(request, response, next) {
 }
 
 myRedditC.use(checkLoginToken);
+
 
 //require my reddit functions and mysql databases
 var reddit = require("./reddit");
@@ -58,54 +65,37 @@ var redditAPI = reddit(connection);
 //create homepage 
 //query string is defaulted at 'hotness'; or ?sort=newest, or top, or controversial
 myRedditC.get('/', function(req, res) {
-    if (!req.loggedInUser) {
-        var queryStr = req.query.sort || 'hotness';
-        redditAPI.getAllPosts({
-            numPerPage: 25,
-            page: 0,
-            sortingMethod: queryStr
-        }, function(err, allPosts) {
-            if (err) {
-                res.status(500).send('Sorry, something went wrong. Please try later.');
-            }
-            else {
-                //console.log(allPosts);
-                res.render('allpost-list', {
-                    posts: allPosts
-                });
-            }
-        });
-    }
-    else {
-        var queryStr = req.query.sort || 'hotness';
-        redditAPI.getAllPosts({
-            numPerPage: 25,
-            page: 0,
-            sortingMethod: queryStr
-        }, function(err, allPosts) {
-            if (err) {
-                res.status(500).send('Sorry, something went wrong. Please try later.');
-            }
-            else {
-                //console.log(allPosts);
-                res.render('logginUser', {
-                    posts: allPosts
-                });
-            }
-        });
-    }
+        console.log('req cookies', req.cookies);
+
+    var queryStr = req.query.sort || 'hotness';
+    redditAPI.getAllPosts({
+        numPerPage: 25,
+        page: 0,
+        sortingMethod: queryStr
+    }, function(err, allPosts) {
+        //if the user has already logged out, no display of log out link in layout.pug
+        var hasSESSION;
+        req.cookies.SESSION ? hasSESSION = true : hasSESSION = false; 
+        
+        if (err) {
+            res.status(500).send('Sorry, something went wrong. Please try later.');
+        }
+        else {
+            res.locals.allPosts = allPosts;
+            res.render('allpost-list', {
+                posts: allPosts,
+                isLogged: hasSESSION
+            });
+        }
+    });
 });
 
 
 //create signup page
 myRedditC.get('/signup', function(req, res) {
-    if (!req.loggedInUser) {
-        res.render('signup-form');
-    }
-    else {
-        res.send('You are already logged in!');
-    }
+    res.render('signup-form');
 });
+
 //get user sign up data
 myRedditC.post('/newUserSignup', function(req, res) {
     //console.log(req.body);
@@ -114,7 +104,9 @@ myRedditC.post('/newUserSignup', function(req, res) {
         password: req.body.password
     }, function(err, user) {
         if (err) {
-            res.status(500).send('sorry, sth went wrong. try later');
+            //here you can handle errors that's creatd by duplicate username
+            //also a place to implement express validator middleware to do a basic userinput validation
+            res.status(500).send('sorry, sth went wrong. try later', err.stack);
         }
         else {
             res.status(300).redirect('/login');
@@ -128,11 +120,9 @@ myRedditC.get('/login', function(req, res) {
 
 });
 myRedditC.post('/login', function(req, res) {
-    //console.log(req.body);
-
     redditAPI.checkLogin(req.body.username, req.body.password, function(err, user) {
         if (err) {
-            res.status(401).send(err.message);
+            res.status(400).send(err.message);
         }
         else {
             redditAPI.createSession(user.id, function(err, token) {
@@ -140,9 +130,7 @@ myRedditC.post('/login', function(req, res) {
                     res.status(500).send('Sorry, something went wrong. Please try again later.');
                 }
                 else {
-                    res.cookie('SESSION', token); //set the token value in browser's db
-                    console.log('should be a new session!', req.loggedInUser);
-
+                    res.cookie(SESSION_USER, token); //set the token value in browser's db and send this cookie to the user
                     res.redirect('/');
                 }
             });
@@ -152,10 +140,15 @@ myRedditC.post('/login', function(req, res) {
 
 //create a log out page
 myRedditC.get('/logout', function(req, res) {
-    console.log('old session:',req.loggedInUser);
-
-    res.clearCookie('SESSION');
-    res.render('logout');
+    redditAPI.deleteSession(req.loggedInUser.token, function(err, session) {
+        if (err) {
+            res.status(500).send('Sorry, something went wrong. Please try again later.');
+        } else {
+           res.render('logout');
+        }
+    });
+    res.clearCookie(SESSION_USER);
+    
 });
 
 //create the create post page
@@ -165,10 +158,9 @@ myRedditC.get('/createpost', function(req, res) {
 myRedditC.post('/createPost', function(req, res) {
 
     if (!req.loggedInUser) {
-        res.render('login-form');//how to render either log in or sign up?
+        res.redirect('/login');//how to render either log in or sign up?
     }
     else {
-
         redditAPI.createPost({
                 title: req.body.title,
                 url: req.body.url,
@@ -177,10 +169,12 @@ myRedditC.post('/createPost', function(req, res) {
             req.body.subredditName,
             function(err, posts) {
                 if (err) {
-                    res.status(500)
+                    res.status(500).send('sth wrong');
                 }
                 else {
-                    res.send('Thanks for your post');
+                    console.log(req.body);
+                    console.log(posts);
+                    res.redirect('/r/' + req.body.subredditName);
                 }
             });
     }
@@ -188,8 +182,6 @@ myRedditC.post('/createPost', function(req, res) {
 
 //create subreddit page
 myRedditC.get('/r/:subreddit', function(req, res) {
-
-
     var subredditName = req.params.subreddit;
 
     redditAPI.getPostForOneSubreddit({
@@ -213,7 +205,25 @@ myRedditC.get('/about', function(req, res) {
 
 //implement vote feature
 myRedditC.post('/vote', function(req, res) {
-    console.log(req.body);
+    if (!req.loggedInUser) {
+        //res.send('Please log in to vote.');
+        res.redirect('/login');
+    }
+    else {
+        var userObj = {
+            userId: req.loggedInUser.id,
+            postId: req.body.postId,
+            vote: Number(req.body.vote)
+        };
+        redditAPI.createOrUpdateVote(userObj, function(err, currVoteScore) {
+            if (err) {
+                res.status(500).send('Sorry, something went wrong. Please try again later.');
+            }
+            else {
+                res.redirect('/');
+            }
+        });
+    }
 });
 
 //listen

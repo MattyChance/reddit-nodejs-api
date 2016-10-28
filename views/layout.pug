@@ -6,6 +6,30 @@ html
    link(rel="stylesheet", href="/files/styles.css")
   
   block title
-   title The Default Title
+   title Matty's Reddit Clone
+   
  body
+  header
+    nav
+      ul
+        li 
+          a(href='/') Home
+        li
+          a(href='createPost') Submit a Post
+        li
+          a(href='/about') About
+        unless loggedInUser
+          li
+            a(href='/login') Log in
+          li
+            a(href='/signup') Sign up
+        
+  if isLogged
+    p You are logged in as #{loggedInUser.username}
+    a(href='/logout') Log me out!
+         
   block content
+  
+  footer
+
+       
