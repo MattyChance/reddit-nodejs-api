@@ -4,9 +4,11 @@ block title
  title subredditposts
 
 block content
- h1= 'Here are the posts for ' + posts[0].name
+ h1= 'Thanks for your post! You might like: ' + posts[0].name
  ul
  each val in posts
   li 
    h2
     a(href= val.url)= val.title
+ 
+ a(href='/') Back to homepage

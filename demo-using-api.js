@@ -38,13 +38,13 @@ var redditAPI = reddit(connection);
 //   connection.end();
 // });
 
-// redditAPI.getPostForOneSubreddit({numPerPage: 25, page: 0, subId: 5}, function(err, postsOfSub) {
-//   if(err) {
-//     console.log(err);
-//   } else {
-//     console.log(postsOfSub);
-//   }
-// });
+redditAPI.getPostForOneSubreddit({numPerPage: 25, page: 0, subName: 'animals'}, function(err, postsOfSub) {
+  if(err) {
+    console.log(err);
+  } else {
+    console.log(postsOfSub);
+  }
+});
 
 // redditAPI.getAllPostsForUser(4, function(err, userPosts) {
 //   if (err) {
@@ -81,19 +81,19 @@ var redditAPI = reddit(connection);
 //   }
 //   connection.end();
 // })
-var testPost = {
-      title: 'awesome sharks',
-      url: 'https://www.animals.com',
-      userId:  9,
-}
-redditAPI.createPost(testPost, 'animals', function (err, newPost) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(newPost);
-  }
-  connection.end();
-});
+// var testPost = {
+//       title: 'awesome sharks',
+//       url: 'https://www.animals.com',
+//       userId:  9,
+// }
+// redditAPI.createPost(testPost, 'animals', function (err, newPost) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(newPost);
+//   }
+//   connection.end();
+// });
 
 
 // redditAPI.createOrUpdateVote({

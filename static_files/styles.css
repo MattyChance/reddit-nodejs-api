@@ -1,16 +1,25 @@
 body {
-    background-color: lightblue;
+    background-color: #e6e9f0;
+}
+
+#top {
+    background-color: #fae596;
+    padding: 5%;
 }
 
 h1 {
-    color: white;
+    color: #3b3a36;
     text-align: center;
+
 }
 
-ul {
-    background: #3399ff;
-    padding: 20px;
+#nav li {
+    list-style-type: none;
+    color: white;
+    display: inline;
+    padding: 1%;
 }
+
 
 li{
     text-align: center;

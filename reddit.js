@@ -79,7 +79,7 @@ module.exports = function RedditAPI(conn) {
         }
         else {
           var getSubredditId = subId
-          //callback(null, subId);
+          callback(null, subId);
           
           var myquery = 'INSERT INTO posts (userId, title, url, createdAt, subredditId) VALUES (?, ?, ?, ?, ?)';
           conn.query(myquery, [post.userId, post.title, post.url, new Date(), getSubredditId[0].id],
@@ -264,7 +264,6 @@ module.exports = function RedditAPI(conn) {
       //next function here
       //there can be a lot of potential errors of this function
       //because the table has foreign keys that contrain the input
-      //1. userId cannot be new -
       createOrUpdateVote: function(vote, callback) {
         var voteValues = [-1, 0, 1];
         if (voteValues.indexOf(vote.vote) === -1) {
@@ -273,7 +272,6 @@ module.exports = function RedditAPI(conn) {
           return;
         }
         else {
-          
           conn.query(
             `INSERT INTO votes 
              (postId, userId, vote, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?) 
@@ -300,16 +298,17 @@ module.exports = function RedditAPI(conn) {
           callback = options;
           options = {};
         }
+        
         var limit = options.numPerPage || 25; 
         var offset = (options.page || 0) * limit;        
-        if (!options.subId) {
+        if (!options.subName) {
             callback(new Error('Please select a subreddit category.'))
         } else {
         conn.query(`SELECT posts.title, posts.url, subreddits.name 
                     FROM posts 
                     LEFT JOIN subreddits 
                     ON subreddits.id = posts.subredditId
-                    WHERE subreddits.id = ${options.subId}`, function(err, postsOfSub) {
+                    WHERE subreddits.name = ?`,[options.subName], function(err, postsOfSub) {
                         if(err) {
                           callback(err);
                         } else {

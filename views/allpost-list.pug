@@ -4,11 +4,38 @@ block title
  title Reddit Clone Homepage
 
 block content
- h1 Today's Hottest Posts
- 
+ #top
+  h1= 'HOT AS CRAP'
+  
+  #nav
+   ul
+     li
+       a(href='/') Home
+     li
+       a(href='/login') Log in
+     li
+       a(href='/signup') Sign up
+     li
+       a(href='createPost') Submit a Post
+     li
+       a(href='/about') About
+  
  ul
  each val in posts
   li 
    a(href= val.postURL)= val.title
    p= 'by ' + val.user.username
    
+   form(action='/vote', method='post')
+     input(type='hidden', name='vote', value='1')
+     | 
+     input(type='hidden', name='postId', value='XXXX')
+     |  
+     button(type='submit') upvote this
+   form(action='/vote', method='post')
+     input(type='hidden', name='vote', value='-1')
+     |  
+     input(type='hidden', name='postId', value='XXXX')
+     |  
+     button(type='submit') downvote this
+
