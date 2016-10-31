@@ -155,7 +155,6 @@ myRedditC.get('/createpost', function(req, res) {
         if (err) {
             res.status(500).send('Sorry. Something went wrong. Please try again later.');
         } else {
-            // console.log(listOfSub);
             res.render('createPost-form', {listOfSub: listOfSub});        
         }
     });
@@ -163,7 +162,7 @@ myRedditC.get('/createpost', function(req, res) {
 
 myRedditC.post('/createPost', function(req, res) {
     if (!req.loggedInUser) {
-        res.redirect('/login');//how to render either log in or sign up?
+        res.redirect('/login');
     }
     else {
         redditAPI.createPost({
@@ -181,6 +180,7 @@ myRedditC.post('/createPost', function(req, res) {
                 }
             });
     }
+
 });
 
 //create subreddit page

@@ -4,40 +4,26 @@ block title
  title Reddit Clone Homepage
 
 block content
- #top
-  h1= 'Reddit Clone World'
-       
-  #nav-sub  
-    ul
-      li
-        a(href='/?sort=hotness') Hottest
-      li
-        a(href='/?sort=newest') Newest
-      li
-        a(href='/?sort=top') Top
-      li 
-        a(href='/?sort=controversial') Controversial
-        
-  
- ul
- each val in posts
-  li
-   a(href= val.postURL)= val.title
-   p= 'by ' + val.user.username
-   
-  p= 'Vote score ' + val.voteScore
 
-   
-   form(action='/vote', method='post')
-     input(type='hidden', name='vote', value='1')
-     | 
-     input(type='hidden', name='postId', value=val.postId)
-     |  
-     button(type='submit') upvote this
-   form(action='/vote', method='post')
-     input(type='hidden', name='vote', value='-1')
-     |  
-     input(type='hidden', name='postId', value=val.postId)
-     |  
-     button(type='submit') downvote this
-
+ #posts
+     ul
+      each val in posts
+          .post-indiv.clearfix
+            p= val.voteScore
+            .button-container
+                form(action='/vote', method='post')
+                 input(type='hidden', name='vote', value='1')
+                 | 
+                 input(type='hidden', name='postId', value=val.postId)
+                 |  
+                 button(type='submit', id='upvote') upvote
+                form(action='/vote', method='post')
+                 input(type='hidden', name='vote', value='-1')
+                 |  
+                 input(type='hidden', name='postId', value=val.postId)
+                 |    
+                 button(type='submit', id='downvote') downvote
+                
+            li.clearfix
+             a(href=val.postURL)= val.title
+             p= 'by ' + val.user.username

@@ -246,6 +246,8 @@ module.exports = function RedditAPI(conn) {
                 callback(err);
               }
               else {
+                // console.log(newSubreddit.insertId);
+                // console.log(newSubreddit);
                 callback(null, theNewSubreddit);
               }
             });

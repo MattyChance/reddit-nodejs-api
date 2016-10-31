@@ -11,12 +11,12 @@ block content
     div
       p Your Post Link
       input(type="text", name="url", placeholder="Submit the link of your post?")
-      p Subreddit
+      p Choose a Subreddit or make your own
       
     div
-      select
+      select(name='subredditName')
         each sub in listOfSub
-          option(value='subredditName')= sub.name
+          option(value=sub.subredditName)= sub.name
 
     br
     button(type="submit") Submit post!

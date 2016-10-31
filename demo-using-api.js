@@ -64,14 +64,14 @@ var redditAPI = reddit(connection);
 //   connection.end();
 // });
 
-// redditAPI.createSubreddit({name: 'food'}, function(err, theNewSubreddit) {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log(theNewSubreddit);
-//   }
-//   connection.end();
-// })
+redditAPI.createSubreddit({name: 'celebrity'}, function(err, theNewSubreddit) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(theNewSubreddit);
+  }
+  connection.end();
+})
 
 // redditAPI.getAllSubreddits(function (err, list) {
 //   if (err) {
