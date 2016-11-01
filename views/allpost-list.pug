@@ -9,21 +9,20 @@ block content
      ul
       each val in posts
           .post-indiv.clearfix
-            p= val.voteScore
-            .button-container
-                form(action='/vote', method='post')
-                 input(type='hidden', name='vote', value='1')
-                 | 
-                 input(type='hidden', name='postId', value=val.postId)
-                 |  
-                 button(type='submit', id='upvote') upvote
-                form(action='/vote', method='post')
-                 input(type='hidden', name='vote', value='-1')
-                 |  
-                 input(type='hidden', name='postId', value=val.postId)
-                 |    
-                 button(type='submit', id='downvote') downvote
-                
-            li.clearfix
-             a(href=val.postURL)= val.title
-             p= 'by ' + val.user.username
+              p.votescore= val.voteScore
+              .button-container
+                  form(action='/vote', method='post')
+                   input(type='hidden', name='vote', value='1')
+                   | 
+                   input(type='hidden', name='postId', value=val.postId)
+                   |  
+                   button(type='submit', id='upvote') upvote
+                  form(action='/vote', method='post')
+                   input(type='hidden', name='vote', value='-1')
+                   |  
+                   input(type='hidden', name='postId', value=val.postId)
+                   |    
+                   button(type='submit', id='downvote') downvote
+              li.clearfix
+               a(href=val.postURL)= val.title
+               p= 'by ' + val.user.username

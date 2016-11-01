@@ -8,7 +8,6 @@
   clear: both;
 }
 
-
 #banner h1 {
     display: inline-block;
     font-family: 'Coiny', cursive;
@@ -111,6 +110,7 @@ header li a:hover {
 
 #posts ul li a {
     float: left;
+    font-family: 'Rubik', cursive;
 }
 
 #posts ul li p {
@@ -127,5 +127,24 @@ button {
     display: inline-block;
     width: 100%;
     cursor: pointer;
+    border-radius: 4px;
 }
 
+.votescore {
+    margin: 0;
+    font-size: x-large;
+}
+
+
+
+.post-indiv {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0px;
+}
+
+.post-indiv p {
+    margin: 0px;
+}
