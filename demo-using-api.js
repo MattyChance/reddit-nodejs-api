@@ -29,7 +29,7 @@ var redditAPI = reddit(connection);
 
 //var sortingMethod = ['top', 'hotness', 'newest', 'controversial']
 
-redditAPI.getAllPosts({numPerPage: 25, page: 0, sortingMethod: 'createAt'}, function(err, allPosts) {
+redditAPI.getAllPosts({numPerPage: 5, page: 0, sortingMethod: 'createAt'}, function(err, allPosts) {
   if (err) {
     console.log(err);
   } else {

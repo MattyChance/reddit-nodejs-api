@@ -160,12 +160,13 @@ module.exports = function RedditAPI(conn) {
           }
           else {
             //callback(null, results);
+
             var modifiedPosts = results.map(function(curr) {
               return {
                 postId: curr.post_id,
                 title: curr.post_title,
                 postURL: curr.post_url,
-                voteScore: curr.vote_score === 'null' ? curr.vote_score : 0,
+                voteScore: curr.vote_score !== null ? curr.vote_score : 0,
                 user: {
                   id: curr.user_id,
                   username: curr.username,
@@ -178,7 +179,7 @@ module.exports = function RedditAPI(conn) {
               };
             });
 
-            //console.log(modifiedPosts);
+            // console.log(modifiedPosts);
             callback(null, modifiedPosts);
           }
         }
