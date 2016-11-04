@@ -12,37 +12,36 @@ html
    
  body
  
-  #banner
+  header
    h1 JIA REDDIT
    if isLogged
      p You are logged in as #{loggedInUser.username},
      a(href='/logout') Log me out!
  
-   nav.clearfix
-    header.clearfix
-        ul
-          li 
-            a(href='/') Home
-          li
-            a(href='createPost') Submit a Post
-          li
-            a(href='/about') About
-          unless loggedInUser
-            li
-              a(href='/login') Log in
-            li
-              a(href='/signup') Sign up
-
-    #subnav.clearfix  
-     ul
-      li
-        a(href='/?sort=hotness') Hottest
-      li
-        a(href='/?sort=newest') Newest
-      li
-        a(href='/?sort=top') Top
+   nav.clearfix.mainNav
+    ul
       li 
-        a(href='/?sort=controversial') Controversial
+        a(href='/') Home
+      li
+        a(href='createPost') Submit a Post
+      li
+        a(href='/about') About
+      unless loggedInUser
+        li
+          a(href='/login') Log in
+        li
+          a(href='/signup') Sign up
+
+   nav.clearfix.sortingNav  
+    ul
+     li
+       a(href='/?sort=hotness') Hottest
+     li
+       a(href='/?sort=newest') Newest
+     li
+       a(href='/?sort=top') Top
+     li 
+       a(href='/?sort=controversial') Controversial
          
   block content
   

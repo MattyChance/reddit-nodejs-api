@@ -4,12 +4,14 @@ block title
  title log in form
 
 block content
- form(action="/login", method="POST")
-   div
-    p Username
-    input(type="text", name="username", placeholder="Username")
-   div 
-    p Password
-    input(type="password", name="password", placeholder="Password")
-   br
-   button.login(type="submit") Log me in! 
+
+ main.logIn
+  form(action="/login", method="POST")
+    div
+     p Username
+     input(type="text", name="username", placeholder="Username")
+    div 
+     p Password
+     input(type="password", name="password", placeholder="Password")
+    br
+    button.login(type="submit") Log me in! 

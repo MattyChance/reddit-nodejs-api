@@ -3,20 +3,21 @@ extends layout.pug
 block title
  title reddit clone signup form
 block content
- form(action='/newUserSignup', method='POST')
-  div
-   p Choose your user name
-   input(type="text", name="username", placeholder="how do you call yourself?")
-  div
-    p Set password
-    input(type="password", name="password", placeholder="Super secret")
-  div
-    p Confirm your password
-    input(type="password", name="confirmPW", placeholder="Type again!")
-  div
-    p Email address
-    input(type="text", name="email", placeholder="Your email address")
-  br
-  button(type="submit") Sign up!
-      
+
+ main.signUp 
+  form(action='/newUserSignup', method='POST')
+   div
+    p Choose your user name
+    input(type="text", name="username", placeholder="how do you call yourself?")
+   div
+     p Set password
+     input(type="password", name="password", placeholder="Super secret")
+   div
+     p Confirm your password
+     input(type="password", name="confirmPW", placeholder="Type again!")
+   div
+     p Email address
+     input(type="text", name="email", placeholder="Your email address")
+   button(type="submit") Sign up!
+       
       

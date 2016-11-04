@@ -29,14 +29,14 @@ var redditAPI = reddit(connection);
 
 //var sortingMethod = ['top', 'hotness', 'newest', 'controversial']
 
-// redditAPI.getAllPosts({numPerPage: 5, page: 0, sortingMethod: 'createAt'}, function(err, allPosts) {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log(allPosts);
-//   }
-//   connection.end();
-// });
+redditAPI.getAllPosts({numPerPage: 25, page: 0, sortingMethod: 'createAt'}, function(err, allPosts) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(allPosts);
+  }
+  connection.end();
+});
 
 // redditAPI.getPostForOneSubreddit({numPerPage: 25, page: 0, subName: 'animals'}, function(err, postsOfSub) {
 //   if(err) {
@@ -64,14 +64,14 @@ var redditAPI = reddit(connection);
 //   connection.end();
 // });
 
-redditAPI.createSubreddit({name: 'celebrity'}, function(err, theNewSubreddit) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(theNewSubreddit);
-  }
-  connection.end();
-})
+// redditAPI.createSubreddit({name: 'celebrity'}, function(err, theNewSubreddit) {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(theNewSubreddit);
+//   }
+//   connection.end();
+// })
 
 // redditAPI.getAllSubreddits(function (err, list) {
 //   if (err) {

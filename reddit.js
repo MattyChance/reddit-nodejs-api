@@ -165,7 +165,7 @@ module.exports = function RedditAPI(conn) {
                 postId: curr.post_id,
                 title: curr.post_title,
                 postURL: curr.post_url,
-                voteScore: curr.vote_score,
+                voteScore: curr.vote_score === 'null' ? curr.vote_score : 0,
                 user: {
                   id: curr.user_id,
                   username: curr.username,

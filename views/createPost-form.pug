@@ -4,19 +4,21 @@ block title
  title create new post form
 
 block content
-  form(action='/createPost', method='POST')
-    div
-      p Your Post Title
-      input(type="text", name="title", placeholder="What's the title of your post?")
-    div
-      p Your Post Link
-      input(type="text", name="url", placeholder="Submit the link of your post?")
-      p Choose a Subreddit or make your own
-      
-    div
-      select(name='subredditName')
-        each sub in listOfSub
-          option(value=sub.subredditName)= sub.name
 
-    br
-    button(type="submit") Submit post!
+  main.createPost
+    form(action='/createPost', method='POST')
+      div
+        p Your Post Title
+        input(type="text", name="title", placeholder="What's the title of your post?")
+      div
+        p Your Post Link
+        input(type="text", name="url", placeholder="Submit the link of your post?")
+        p Choose a Subreddit or make your own
+        
+      div
+        select(name='subredditName')
+          each sub in listOfSub
+            option(value=sub.subredditName)= sub.name
+  
+      br
+      button(type="submit") Submit post!

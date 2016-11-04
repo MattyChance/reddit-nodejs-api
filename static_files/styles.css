@@ -8,21 +8,22 @@
   clear: both;
 }
 
-#banner h1 {
+header h1 {
     display: inline-block;
     font-family: 'Coiny', cursive;
-    color: #1DE9B6;
+    color: white;
+    padding-left: 1em;
 
 }
 
-#banner p {
+header p {
     display: inline-block;
     padding-left: 1%;
     font-family: 'Rubik', sans-serif;
     color: darkgray;
 }
 
-#banner a {
+header a {
     display: inline-block;
     padding: 14px 16px;
     font-family: 'Rubik', sans-serif;
@@ -59,36 +60,36 @@ header li a:hover {
 
 
 
-#subnav {
+nav .sortingNav {
     background-color: #1DE9B6;
 }
 
-#subnav ul {
+nav .sortingNav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
 
-#subnav li {
+nav .sortingNav li {
     float: left;
 }
 
-#subnav li a {
+nav .sortingNav li a {
     padding: 14px 16px;
     color: white;
     font-weight: bold
 }
 
-#subnav li a:hover {
+nav .sortingNav li a:hover {
     background-color: #00BFA5;
 }
 
-#posts ul .post-indiv{
+main ul .post-indiv{
     width: 100%;
 }
 
-#posts ul p {
+main ul p {
     display: inline-block;
     float: left;
     padding: 2%;
@@ -103,17 +104,17 @@ header li a:hover {
 
 }
 
-#posts ul li {
+main ul li {
     float: left;
     list-style-type: none;
 }
 
-#posts ul li a {
+main ul li a {
     float: left;
     font-family: 'Rubik', cursive;
 }
 
-#posts ul li p {
+main ul li p {
     float: left;
 }
 
@@ -125,9 +126,10 @@ button {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    width: 100%;
+    width: 10em;
     cursor: pointer;
     border-radius: 4px;
+    margin-top: 2em;
 }
 
 .votescore {
@@ -147,4 +149,38 @@ button {
 
 .post-indiv p {
     margin: 0px;
+}
+
+.signUp form{
+    color: darkgray;
+    font-family: 'Rubik', cursive;
+    padding-left: 1em;
+
+}
+
+.signUp button{
+    color: white;
+    font-family: 'Rubik', cursive;
+}
+
+.logIn form{
+    color: darkgray;
+    font-family: 'Rubik', cursive;
+    padding-left: 1em;
+}
+
+.logIn button{
+    color: white;
+    font-family: 'Rubik', cursive;
+}
+
+.createPost form{
+    color: darkgray;
+    font-family: 'Rubik', cursive;
+    padding-left: 1em;
+}
+
+.createPost button{
+    color: white;
+    font-family: 'Rubik', cursive;
 }

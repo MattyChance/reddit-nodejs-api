@@ -9,6 +9,8 @@ var myRedditC = express();
 //output html in a better format; this will take extra data
 //myRedditC.locals.pretty = true; 
 
+//give rendered page a different title
+myRedditC.locals.title = "default title"
 
 //use the pug template engine
 myRedditC.set('view engine', 'pug');
@@ -29,7 +31,7 @@ function checkLoginToken(request, response, next) {
     if (request.cookies.SESSION) {
         redditAPI.getUserFromSession(request.cookies.SESSION, function(err, user) {
             if (err) {
-                console.log(err);
+                response.status(500).send(err);
             }
             if (user) {
                 request.loggedInUser = user;
@@ -90,7 +92,7 @@ myRedditC.get('/', function(req, res) {
 
 //create signup page
 myRedditC.get('/signup', function(req, res) {
-    res.render('signup-form');
+    res.render('signup-form', {title: "Sign up for Matty's JIA Reddit"});
 });
 
 //get user sign up data
