@@ -7,18 +7,15 @@ block content
 
   main.createPost
     form(action='/createPost', method='POST')
-      div
-        p Your Post Title
-        input(type="text", name="title", placeholder="What's the title of your post?")
-      div
-        p Your Post Link
-        input(type="text", name="url", placeholder="Submit the link of your post?")
-        p Choose a Subreddit or make your own
-        
-      div
-        select(name='subredditName')
-          each sub in listOfSub
-            option(value=sub.subredditName)= sub.name
-  
+      p Your Post Title
+      input(type="text", name="title", placeholder="What's your post about?")
+      p Your Post Link
+      input(type="text", name="url", placeholder="What's the link?", class="userInputURL")
+      br
+      button.suggest(action='/suggestTitle' type='button') Suggest title
+      p Choose a Subreddit
+      select(name='subredditName')
+        each sub in listOfSub
+          option(value=sub.subredditName)= sub.name
       br
       button(type="submit") Submit post!

@@ -6,46 +6,49 @@ html
   
   block scripts
    link(rel="stylesheet", href="/files/styles.css")
+   script(src='https://code.jquery.com/jquery-3.1.1.js')
+   script(src='https://code.jquery.com/jquery-migrate-3.0.0.js')
+   script(src='/files/site.js')
 
   block title
    title Matty's Reddit Clone
    
  body
- 
-  header
-   h1 JIA REDDIT
-   if isLogged
+  block header
+   header
+    h1.siteTitle 
+     a(href='/') JIA REDDIT
+    if isLogged
      p You are logged in as #{loggedInUser.username},
      a(href='/logout') Log me out!
- 
-   nav.clearfix.mainNav
-    ul
-      li 
-        a(href='/') Home
-      li
-        a(href='createPost') Submit a Post
-      li
-        a(href='/about') About
-      unless loggedInUser
-        li
-          a(href='/login') Log in
-        li
-          a(href='/signup') Sign up
+      
+    nav.clearfix.mainNav
+     ul
+       li 
+         a(href='/') Home
+       li
+         a(href='createPost') Submit a Post
+       li
+         a(href='/about') About
+       unless loggedInUser
+         li
+           a(href='/login') Log in
+         li
+           a(href='/signup') Sign up
 
-   nav.clearfix.sortingNav  
-    ul
-     li
-       a(href='/?sort=hotness') Hottest
-     li
-       a(href='/?sort=newest') Newest
-     li
-       a(href='/?sort=top') Top
-     li 
-       a(href='/?sort=controversial') Controversial
+    nav.clearfix.sortingNav  
+     ul
+      li
+        a(href='/?sort=hotness') Hottest
+      li
+        a(href='/?sort=newest') Newest
+      li
+        a(href='/?sort=top') Top
+      li 
+        a(href='/?sort=controversial') Controversial
          
   block content
   
   footer
-
-
-       
+   p &copy; MattyC, 2016
+   

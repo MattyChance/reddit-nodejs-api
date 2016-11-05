@@ -4,11 +4,12 @@ block title
  title subredditposts
 
 block content
- h1= 'Thanks for your post! You might like: ' + posts[0].name
- ul
- each val in posts
-  li 
-   h2
-    a(href= val.url)= val.title
- 
- a(href='/') Back to homepage
+
+ main.aftSubmitPost
+  h1= 'Thanks for your post! You might like: ' + posts[0].name
+  ul
+   each val in posts
+    li 
+    h2
+     a(href= val.url)= val.title
+   a(href='/') Back to homepage

@@ -2,6 +2,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
+var request = require('request');
 //var morgan = require("morgan");
 
 var myRedditC = express();
@@ -229,6 +230,19 @@ myRedditC.post('/vote', function(req, res) {
             }
         });
     }
+});
+
+//make my server to receive the html of another domain
+myRedditC.get('/suggestTitle', function(req, res) {
+    //console.log('3', req.query.url);
+    request(req.query.url, function(err, requestResponse, body) {
+        if (err) {
+            requestResponse.status(500).send('Sorry, something went wrong. Please try again later.');
+        } else {
+            var titleOfPage = body.split('<title>')[1].split('</title>')[0];
+            res.send(titleOfPage);
+        }
+    });
 });
 
 //listen
