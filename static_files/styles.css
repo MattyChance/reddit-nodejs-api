@@ -105,7 +105,6 @@ main ul p {
 .button-container {
     float: left;
     padding: 2%;
-
 }
 
 main ul li {
@@ -208,4 +207,12 @@ footer {
     text-align: center;
     margin: 1em 0;
     padding: 0.1em 0;
+}
+
+.upvote {
+    background-color: #ff4165;
+}
+
+.downvote {
+    background-color: 	#5c573b;
 }

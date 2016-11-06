@@ -8,13 +8,13 @@ block content
   main.createPost
     form(action='/createPost', method='POST')
       p Your Post Title
-      input(type="text", name="title", placeholder="What's your post about?")
+      input(type="text", name="title", placeholder="What's your post about?", required="required")
       p Your Post Link
-      input(type="text", name="url", placeholder="What's the link?", class="userInputURL")
+      input(type="text", name="url", placeholder="http://", class="userInputURL", required="required")
       br
       button.suggest(action='/suggestTitle' type='button') Suggest title
       p Choose a Subreddit
-      select(name='subredditName')
+      select(name='subredditName', required="required")
         each sub in listOfSub
           option(value=sub.subredditName)= sub.name
       br

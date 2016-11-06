@@ -8,20 +8,10 @@ block content
      ul
       each val in posts
           article.post-indiv.clearfix
-              p.votescore= val.voteScore
+              p(class="votescore", id=val.postId, data-score=val.voteScore)=val.voteScore
               .button-container
-                  form(action='/vote', method='post')
-                   input(type='hidden', name='vote', value='1')
-                   | 
-                   input(type='hidden', name='postId', value=val.postId)
-                   |  
-                   button(type='submit', id='upvote') upvote
-                  form(action='/vote', method='post')
-                   input(type='hidden', name='vote', value='-1')
-                   |  
-                   input(type='hidden', name='postId', value=val.postId)
-                   |    
-                   button(type='submit', id='downvote') downvote
-              li.clearfix
+                button.clearfix(class="vote-btn", data-postid=val.postId, data-direction="1") UPVOTE
+                button.clearfix(class="vote-btn", data-postid=val.postId, data-direction="-1") DOWNVOTE
+              li(class="postsId-" + val.postId).clearfix
                a(href=val.postURL)= val.title
                p= 'by ' + val.user.username

@@ -3,6 +3,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
 var request = require('request');
+var validator = require('express-validator'); 
 //var morgan = require("morgan");
 
 var myRedditC = express();
@@ -24,6 +25,8 @@ myRedditC.use('/files', express.static('static_files'));
 
 //middleware that adds cookie property to a request
 myRedditC.use(cookieParser());
+//middleware that
+myRedditC.use(validator());
 
 const SESSION_USER = 'SESSION';
 
@@ -109,7 +112,7 @@ myRedditC.post('/newUserSignup', function(req, res) {
             res.status(500).send('sorry, sth went wrong. try later', err.stack);
         }
         else {
-            res.status(300).redirect('/login');
+            res.status(300).redirect('/');
         }
     });
 });
@@ -216,17 +219,20 @@ myRedditC.post('/vote', function(req, res) {
         res.redirect('/login');
     }
     else {
+        
         var userObj = {
             userId: req.loggedInUser.id,
             postId: req.body.postId,
             vote: Number(req.body.vote)
         };
+
         redditAPI.createOrUpdateVote(userObj, function(err, currVoteScore) {
             if (err) {
                 res.status(500).send('Sorry, something went wrong. Please try again later.');
             }
             else {
-                res.redirect('/');
+                res.json({success: true, newScore: currVoteScore[0]["SUM(vote)"]});
+                // console.log(currVoteScore[0]["SUM(vote)"]);
             }
         });
     }
@@ -240,7 +246,8 @@ myRedditC.get('/suggestTitle', function(req, res) {
             requestResponse.status(500).send('Sorry, something went wrong. Please try again later.');
         } else {
             var titleOfPage = body.split('<title>')[1].split('</title>')[0];
-            res.send(titleOfPage);
+            res.json({'title': titleOfPage});
+            //res.send(titleOfPage);
         }
     });
 });

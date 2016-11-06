@@ -8,16 +8,16 @@ block content
   form(action='/newUserSignup', method='POST')
    div
     p Choose your user name
-    input(type="text", name="username", placeholder="how do you call yourself?")
+    input(type="text", name="username", placeholder="how do you call yourself?", required="required")
    div
      p Set password
-     input(type="password", name="password", placeholder="Super secret")
+     input(type="password", name="password", placeholder="Super secret", required="required")
    div
      p Confirm your password
-     input(type="password", name="confirmPW", placeholder="Type again!")
+     input(type="password", name="confirmPW", placeholder="Type again!", required="required")
    div
      p Email address
-     input(type="text", name="email", placeholder="Your email address")
+     input(type="text", name="email", placeholder="Your email address", required="required")
    button(type="submit") Sign up!
        
       
